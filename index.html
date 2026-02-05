@@ -18,73 +18,49 @@
             position: absolute;
             top: 10px;
             left: 10px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             padding: 15px;
             border-radius: 10px;
             width: 280px;
             max-height: 90vh;
             overflow-y: auto;
+            z-index: 100;
         }
         
         h2 { 
-            font-size: 16px; 
-            margin-bottom: 10px; 
+            font-size: 14px; 
+            margin-bottom: 8px; 
             color: #4ecdc4;
             border-bottom: 1px solid #4ecdc4;
-            padding-bottom: 5px;
+            padding-bottom: 4px;
         }
         
-        .control-group {
-            margin-bottom: 15px;
-        }
+        .control-group { margin-bottom: 12px; }
         
         .control-row {
             display: flex;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         
-        label {
-            flex: 1;
-            font-size: 12px;
-            color: #aaa;
-        }
-        
-        input[type="range"] {
-            width: 100px;
-            margin: 0 10px;
-        }
-        
-        .value {
-            width: 50px;
-            text-align: right;
-            font-family: monospace;
-            font-size: 12px;
-            color: #4ecdc4;
-        }
+        label { flex: 1; font-size: 11px; color: #aaa; }
+        input[type="range"] { width: 90px; margin: 0 8px; cursor: pointer; }
+        .value { width: 45px; text-align: right; font-family: monospace; font-size: 11px; color: #4ecdc4; }
         
         #results {
             position: absolute;
             top: 10px;
             right: 10px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             padding: 15px;
             border-radius: 10px;
-            width: 220px;
+            width: 200px;
+            z-index: 100;
         }
         
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-            font-size: 13px;
-        }
-        
+        .result-row { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
         .result-label { color: #aaa; }
-        .result-value { 
-            font-family: monospace; 
-            font-weight: bold;
-        }
+        .result-value { font-family: monospace; font-weight: bold; }
         .pass { color: #4ecdc4; }
         .warn { color: #f9ca24; }
         .fail { color: #ff6b6b; }
@@ -93,35 +69,28 @@
             position: absolute;
             bottom: 10px;
             left: 10px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             padding: 10px 15px;
             border-radius: 10px;
-            font-size: 12px;
+            font-size: 11px;
+            z-index: 100;
         }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin: 3px 0;
-        }
-        
-        .legend-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
+        .legend-item { display: flex; align-items: center; margin: 2px 0; }
+        .legend-color { width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
         
         #instructions {
             position: absolute;
             bottom: 10px;
             right: 10px;
             background: rgba(0,0,0,0.6);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            color: #888;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            color: #666;
+            z-index: 100;
         }
+        
+        canvas { display: block; }
     </style>
 </head>
 <body>
@@ -132,18 +101,18 @@
         <div class="control-group">
             <div class="control-row">
                 <label>Yaw (°)</label>
-                <input type="range" id="yaw" min="-45" max="45" value="0" step="0.5">
-                <span class="value" id="yawVal">0.0</span>
+                <input type="range" id="yaw" min="-45" max="45" value="0" step="1">
+                <span class="value" id="yawVal">0</span>
             </div>
             <div class="control-row">
                 <label>Pitch (°)</label>
-                <input type="range" id="pitch" min="-10" max="10" value="0" step="0.5">
-                <span class="value" id="pitchVal">0.0</span>
+                <input type="range" id="pitch" min="-10" max="10" value="0" step="1">
+                <span class="value" id="pitchVal">0</span>
             </div>
             <div class="control-row">
                 <label>Roll (°)</label>
-                <input type="range" id="roll" min="-10" max="10" value="0" step="0.5">
-                <span class="value" id="rollVal">0.0</span>
+                <input type="range" id="roll" min="-10" max="10" value="0" step="1">
+                <span class="value" id="rollVal">0</span>
             </div>
         </div>
         
@@ -151,7 +120,7 @@
         <div class="control-group">
             <div class="control-row">
                 <label>Mount X (ft)</label>
-                <input type="range" id="mountX" min="-4" max="0" value="-3" step="1">
+                <input type="range" id="mountX" min="-4" max="-1" value="-3" step="1">
                 <span class="value" id="mountXVal">-3</span>
             </div>
         </div>
@@ -169,23 +138,23 @@
                 <span class="value" id="antYVal">5.4</span>
             </div>
             <div class="control-row">
-                <label>Z down (ft)</label>
+                <label>Z up (ft)</label>
                 <input type="range" id="antZ" min="0" max="10" value="6.6" step="0.1">
                 <span class="value" id="antZVal">6.6</span>
             </div>
         </div>
         
-        <h2>🎯 Target Point</h2>
+        <h2>🎯 Target Offset</h2>
         <div class="control-group">
             <div class="control-row">
-                <label>Offset N (ft)</label>
-                <input type="range" id="targetN" min="-5" max="5" value="0" step="0.1">
-                <span class="value" id="targetNVal">0.0</span>
+                <label>N (ft)</label>
+                <input type="range" id="targetN" min="-3" max="3" value="0" step="0.1">
+                <span class="value" id="targetNVal">0</span>
             </div>
             <div class="control-row">
-                <label>Offset E (ft)</label>
-                <input type="range" id="targetE" min="-5" max="5" value="0" step="0.1">
-                <span class="value" id="targetEVal">0.0</span>
+                <label>E (ft)</label>
+                <input type="range" id="targetE" min="-3" max="3" value="0" step="0.1">
+                <span class="value" id="targetEVal">0</span>
             </div>
         </div>
     </div>
@@ -194,171 +163,139 @@
         <h2>📊 QC Results</h2>
         <div class="result-row">
             <span class="result-label">N Error:</span>
-            <span class="result-value" id="errN">0.0 mm</span>
+            <span class="result-value pass" id="errN">0 mm</span>
         </div>
         <div class="result-row">
             <span class="result-label">E Error:</span>
-            <span class="result-value" id="errE">0.0 mm</span>
+            <span class="result-value pass" id="errE">0 mm</span>
         </div>
         <div class="result-row">
             <span class="result-label">Z Error:</span>
-            <span class="result-value" id="errZ">0.0 mm</span>
+            <span class="result-value pass" id="errZ">0 mm</span>
         </div>
-        <div class="result-row" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #333;">
+        <div class="result-row" style="margin-top:8px;padding-top:8px;border-top:1px solid #333;">
             <span class="result-label">Horiz:</span>
-            <span class="result-value" id="errH">0.0 mm</span>
+            <span class="result-value pass" id="errH">0 mm</span>
         </div>
         <div class="result-row">
             <span class="result-label">Status:</span>
-            <span class="result-value" id="status">✅ PASS</span>
+            <span class="result-value pass" id="status">✅ PASS</span>
         </div>
     </div>
     
     <div id="legend">
-        <div class="legend-item"><div class="legend-color" style="background:#4ecdc4"></div>Work Point (WP)</div>
+        <div class="legend-item"><div class="legend-color" style="background:#4ecdc4"></div>Work Point</div>
         <div class="legend-item"><div class="legend-color" style="background:#ff6b6b"></div>Machine Antenna</div>
-        <div class="legend-item"><div class="legend-color" style="background:#f9ca24"></div>Rover (on mount)</div>
-        <div class="legend-item"><div class="legend-color" style="background:#a55eea"></div>Target Point</div>
+        <div class="legend-item"><div class="legend-color" style="background:#f9ca24"></div>Rover</div>
+        <div class="legend-item"><div class="legend-color" style="background:#a55eea"></div>Target</div>
         <div class="legend-item"><div class="legend-color" style="background:#26de81"></div>Computed WP</div>
     </div>
     
-    <div id="instructions">
-        🖱️ Drag to rotate • Scroll to zoom • Right-drag to pan
-    </div>
+    <div id="instructions">🖱️ Drag: rotate • Scroll: zoom • Shift+drag: pan</div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <script>
-        // Scene setup
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        
+        // Scene
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x1a1a2e);
         
-        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(15, 12, 15);
+        // Camera
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(12, 10, 12);
         
+        // Renderer
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         document.getElementById('container').appendChild(renderer.domElement);
         
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
-        controls.dampingFactor = 0.05;
+        controls.target.set(0, 2, 0);
         
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-        scene.add(ambientLight);
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(10, 20, 10);
-        scene.add(directionalLight);
+        // Lights
+        scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        dirLight.position.set(5, 10, 5);
+        scene.add(dirLight);
         
-        // Ground grid
-        const gridHelper = new THREE.GridHelper(30, 30, 0x444444, 0x333333);
-        scene.add(gridHelper);
+        // Grid
+        const grid = new THREE.GridHelper(20, 20, 0x444444, 0x333333);
+        scene.add(grid);
         
-        // Axis labels
-        function createAxisLabel(text, position, color) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 64;
-            canvas.height = 32;
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = color;
-            ctx.font = 'bold 24px Arial';
-            ctx.fillText(text, 10, 24);
-            const texture = new THREE.CanvasTexture(canvas);
-            const material = new THREE.SpriteMaterial({ map: texture });
-            const sprite = new THREE.Sprite(material);
-            sprite.position.copy(position);
-            sprite.scale.set(2, 1, 1);
-            return sprite;
-        }
+        // Axes helper at origin
+        const axesHelper = new THREE.AxesHelper(5);
+        scene.add(axesHelper);
         
-        // World axes
-        const worldAxes = new THREE.AxesHelper(8);
-        scene.add(worldAxes);
-        scene.add(createAxisLabel('N', new THREE.Vector3(9, 0, 0), '#ff4444'));
-        scene.add(createAxisLabel('E', new THREE.Vector3(0, 0, 9), '#44ff44'));
-        scene.add(createAxisLabel('Up', new THREE.Vector3(0, 9, 0), '#4444ff'));
+        // Materials
+        const wpMat = new THREE.MeshStandardMaterial({ color: 0x4ecdc4, emissive: 0x4ecdc4, emissiveIntensity: 0.5 });
+        const antMat = new THREE.MeshStandardMaterial({ color: 0xff6b6b, emissive: 0xff6b6b, emissiveIntensity: 0.5 });
+        const roverMat = new THREE.MeshStandardMaterial({ color: 0xf9ca24, emissive: 0xf9ca24, emissiveIntensity: 0.5 });
+        const targetMat = new THREE.MeshStandardMaterial({ color: 0xa55eea, emissive: 0xa55eea, emissiveIntensity: 0.5 });
+        const computedMat = new THREE.MeshStandardMaterial({ color: 0x26de81, wireframe: true });
+        const machineMat = new THREE.MeshStandardMaterial({ color: 0x555555, transparent: true, opacity: 0.6 });
+        const poleMat = new THREE.MeshStandardMaterial({ color: 0x888888 });
         
-        // Create objects
         // Work Point
-        const wpGeom = new THREE.SphereGeometry(0.3, 32, 32);
-        const wpMat = new THREE.MeshPhongMaterial({ color: 0x4ecdc4, emissive: 0x4ecdc4, emissiveIntensity: 0.3 });
-        const workPoint = new THREE.Mesh(wpGeom, wpMat);
+        const workPoint = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16), wpMat);
         scene.add(workPoint);
         
-        // Machine body (simple box)
+        // Machine group
         const machineGroup = new THREE.Group();
-        const bodyGeom = new THREE.BoxGeometry(4, 1, 2);
-        const bodyMat = new THREE.MeshPhongMaterial({ color: 0x666666, transparent: true, opacity: 0.7 });
-        const machineBody = new THREE.Mesh(bodyGeom, bodyMat);
-        machineBody.position.y = 0.5;
+        scene.add(machineGroup);
+        
+        // Machine body
+        const machineBody = new THREE.Mesh(new THREE.BoxGeometry(5, 0.8, 2.5), machineMat);
+        machineBody.position.y = 0.4;
         machineGroup.add(machineBody);
         
-        // Machine local axes
-        const machineAxes = new THREE.AxesHelper(3);
+        // Machine axes (shows body frame)
+        const machineAxes = new THREE.AxesHelper(2);
         machineGroup.add(machineAxes);
         
         // Machine antenna
-        const antGeom = new THREE.SphereGeometry(0.25, 32, 32);
-        const antMat = new THREE.MeshPhongMaterial({ color: 0xff6b6b, emissive: 0xff6b6b, emissiveIntensity: 0.3 });
-        const antenna = new THREE.Mesh(antGeom, antMat);
+        const antenna = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 16), antMat);
         machineGroup.add(antenna);
         
         // Antenna pole
-        const poleGeom = new THREE.CylinderGeometry(0.05, 0.05, 1, 8);
-        const poleMat = new THREE.MeshPhongMaterial({ color: 0x888888 });
-        const antennaPole = new THREE.Mesh(poleGeom, poleMat);
-        machineGroup.add(antennaPole);
-        
-        scene.add(machineGroup);
+        const antPole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1, 8), poleMat);
+        machineGroup.add(antPole);
         
         // Rover
-        const roverGeom = new THREE.SphereGeometry(0.2, 32, 32);
-        const roverMat = new THREE.MeshPhongMaterial({ color: 0xf9ca24, emissive: 0xf9ca24, emissiveIntensity: 0.3 });
-        const rover = new THREE.Mesh(roverGeom, roverMat);
-        scene.add(rover);
+        const rover = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), roverMat);
+        machineGroup.add(rover);
         
         // Rover pole
-        const roverPoleGeom = new THREE.CylinderGeometry(0.03, 0.03, 2, 8);
-        const roverPole = new THREE.Mesh(roverPoleGeom, poleMat);
-        scene.add(roverPole);
+        const roverPole = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.5, 8), poleMat);
+        machineGroup.add(roverPole);
         
-        // Target point
-        const targetGeom = new THREE.OctahedronGeometry(0.3);
-        const targetMat = new THREE.MeshPhongMaterial({ color: 0xa55eea, emissive: 0xa55eea, emissiveIntensity: 0.3 });
-        const target = new THREE.Mesh(targetGeom, targetMat);
+        // Target
+        const target = new THREE.Mesh(new THREE.OctahedronGeometry(0.25), targetMat);
         scene.add(target);
         
-        // Computed WP from rover
-        const computedWPGeom = new THREE.SphereGeometry(0.2, 32, 32);
-        const computedWPMat = new THREE.MeshPhongMaterial({ color: 0x26de81, emissive: 0x26de81, emissiveIntensity: 0.3, wireframe: true });
-        const computedWP = new THREE.Mesh(computedWPGeom, computedWPMat);
+        // Computed WP
+        const computedWP = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 16), computedMat);
         scene.add(computedWP);
         
         // Error line
-        const errorLineMat = new THREE.LineBasicMaterial({ color: 0xff6b6b });
-        const errorLineGeom = new THREE.BufferGeometry();
-        const errorLine = new THREE.Line(errorLineGeom, errorLineMat);
+        const errorLineGeo = new THREE.BufferGeometry();
+        const errorLine = new THREE.Line(errorLineGeo, new THREE.LineBasicMaterial({ color: 0xff6b6b, linewidth: 2 }));
         scene.add(errorLine);
         
-        // Connection lines
-        const lineMat = new THREE.LineDashedMaterial({ color: 0x666666, dashSize: 0.2, gapSize: 0.1 });
-        
-        function createLine() {
-            const geom = new THREE.BufferGeometry();
-            const line = new THREE.Line(geom, lineMat);
-            line.computeLineDistances();
-            return line;
-        }
-        
-        const wpToAntLine = createLine();
-        scene.add(wpToAntLine);
-        const wpToRoverLine = createLine();
-        scene.add(wpToRoverLine);
-        
         // Update function
-        function updateScene() {
+        function update() {
             const yaw = parseFloat(document.getElementById('yaw').value);
             const pitch = parseFloat(document.getElementById('pitch').value);
             const roll = parseFloat(document.getElementById('roll').value);
@@ -369,11 +306,11 @@
             const targetN = parseFloat(document.getElementById('targetN').value);
             const targetE = parseFloat(document.getElementById('targetE').value);
             
-            // Update display values
-            document.getElementById('yawVal').textContent = yaw.toFixed(1);
-            document.getElementById('pitchVal').textContent = pitch.toFixed(1);
-            document.getElementById('rollVal').textContent = roll.toFixed(1);
-            document.getElementById('mountXVal').textContent = mountX.toFixed(0);
+            // Update display
+            document.getElementById('yawVal').textContent = yaw;
+            document.getElementById('pitchVal').textContent = pitch;
+            document.getElementById('rollVal').textContent = roll;
+            document.getElementById('mountXVal').textContent = mountX;
             document.getElementById('antXVal').textContent = antX.toFixed(1);
             document.getElementById('antYVal').textContent = antY.toFixed(1);
             document.getElementById('antZVal').textContent = antZ.toFixed(1);
@@ -381,69 +318,61 @@
             document.getElementById('targetEVal').textContent = targetE.toFixed(1);
             
             // Convert to radians
-            const yawRad = THREE.MathUtils.degToRad(yaw);
-            const pitchRad = THREE.MathUtils.degToRad(pitch);
-            const rollRad = THREE.MathUtils.degToRad(roll);
+            const yawRad = yaw * Math.PI / 180;
+            const pitchRad = pitch * Math.PI / 180;
+            const rollRad = roll * Math.PI / 180;
             
-            // Update machine orientation (note: Three.js Y is up)
-            // Our convention: X=North, Z=East, Y=Up
-            machineGroup.rotation.set(0, 0, 0);
-            machineGroup.rotateY(-yawRad);  // Yaw around Y (up)
-            machineGroup.rotateX(pitchRad); // Pitch around X
-            machineGroup.rotateZ(-rollRad); // Roll around Z
+            // Machine rotation (Three.js: Y=up, so yaw rotates around Y)
+            machineGroup.rotation.set(pitchRad, -yawRad, rollRad, 'YXZ');
             
-            // Antenna position in body frame, then transform
-            // Body: X=forward, Y=right, Z=down -> World: X=North, Z=East, Y=Up
-            const antBody = new THREE.Vector3(antX, -antZ, antY);
-            antenna.position.copy(antBody);
-            antennaPole.position.set(antBody.x, antBody.y + 0.5, antBody.z);
+            // Antenna position in body frame -> Three.js coords
+            // Body: X=forward, Y=right, Z=down
+            // Three.js: X=forward(N), Y=up, Z=right(E)
+            antenna.position.set(antX, antZ, antY);
+            antPole.position.set(antX, antZ - 0.5, antY);
             
-            // Rover position in body frame
-            const roverBody = new THREE.Vector3(mountX, 0, 0);
+            // Rover position (on mount, behind WP)
+            rover.position.set(mountX, 0.75, 0);
+            roverPole.position.set(mountX, 0, 0);
             
             // Get world positions
-            const antWorld = antenna.getWorldPosition(new THREE.Vector3());
+            const antWorld = new THREE.Vector3();
+            antenna.getWorldPosition(antWorld);
+            
             const roverWorld = new THREE.Vector3();
-            machineGroup.localToWorld(roverWorld.copy(roverBody));
+            rover.getWorldPosition(roverWorld);
             
-            // Update rover mesh
-            rover.position.copy(roverWorld);
-            roverPole.position.set(roverWorld.x, roverWorld.y + 1, roverWorld.z);
-            
-            // Target position
+            // Target
             target.position.set(targetN, 0, targetE);
             
-            // Compute WP from rover reading
-            // WP_N = Rover_N + mountX * cos(yaw)
+            // Compute WP from rover: WP = Rover - mountOffset in world
+            // WP_N = Rover_N + mountX * cos(yaw)  [mountX is negative]
             // WP_E = Rover_E - mountX * sin(yaw)
-            const computedN = roverWorld.x + mountX * Math.cos(-yawRad);
-            const computedE = roverWorld.z - mountX * Math.sin(-yawRad);
-            computedWP.position.set(computedN, 0, computedE);
+            const compN = roverWorld.x + mountX * Math.cos(yawRad);
+            const compE = roverWorld.z - mountX * Math.sin(yawRad);
+            computedWP.position.set(compN, 0, compE);
             
-            // Calculate errors (compared to target, in mm)
-            const errN = (computedN - targetN) * 304.8;
-            const errE = (computedE - targetE) * 304.8;
-            const errZ = 0; // Simplified for now
+            // Error (mm)
+            const errN = (compN - targetN) * 304.8;
+            const errE = (compE - targetE) * 304.8;
+            const errZ = 0;
             const errH = Math.sqrt(errN*errN + errE*errE);
             
             // Update results
-            document.getElementById('errN').textContent = errN.toFixed(1) + ' mm';
-            document.getElementById('errE').textContent = errE.toFixed(1) + ' mm';
-            document.getElementById('errZ').textContent = errZ.toFixed(1) + ' mm';
-            document.getElementById('errH').textContent = errH.toFixed(1) + ' mm';
+            const colorClass = (v, g, w) => Math.abs(v) <= g ? 'pass' : Math.abs(v) <= w ? 'warn' : 'fail';
             
-            // Color code results
-            const colorClass = (val, threshGood, threshWarn) => {
-                if (Math.abs(val) <= threshGood) return 'pass';
-                if (Math.abs(val) <= threshWarn) return 'warn';
-                return 'fail';
-            };
-            
+            document.getElementById('errN').textContent = errN.toFixed(0) + ' mm';
             document.getElementById('errN').className = 'result-value ' + colorClass(errN, 10, 25);
+            
+            document.getElementById('errE').textContent = errE.toFixed(0) + ' mm';
             document.getElementById('errE').className = 'result-value ' + colorClass(errE, 10, 25);
+            
+            document.getElementById('errZ').textContent = errZ.toFixed(0) + ' mm';
+            document.getElementById('errZ').className = 'result-value pass';
+            
+            document.getElementById('errH').textContent = errH.toFixed(0) + ' mm';
             document.getElementById('errH').className = 'result-value ' + colorClass(errH, 15, 30);
             
-            // Status
             const statusEl = document.getElementById('status');
             if (errH <= 15) {
                 statusEl.textContent = '✅ PASS';
@@ -456,46 +385,36 @@
                 statusEl.className = 'result-value fail';
             }
             
-            // Update connection lines
-            updateLine(wpToAntLine, [workPoint.position, antWorld]);
-            updateLine(wpToRoverLine, [workPoint.position, roverWorld]);
-            updateLine(errorLine, [computedWP.position, target.position]);
-        }
-        
-        function updateLine(line, points) {
-            const positions = new Float32Array(points.length * 3);
-            points.forEach((p, i) => {
-                positions[i*3] = p.x;
-                positions[i*3+1] = p.y;
-                positions[i*3+2] = p.z;
-            });
-            line.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            line.geometry.attributes.position.needsUpdate = true;
-            line.computeLineDistances();
+            // Error line
+            const pts = [computedWP.position.clone(), target.position.clone()];
+            pts[0].y = 0.1;
+            pts[1].y = 0.1;
+            errorLine.geometry.setFromPoints(pts);
         }
         
         // Event listeners
-        document.querySelectorAll('input[type="range"]').forEach(input => {
-            input.addEventListener('input', updateScene);
+        document.querySelectorAll('input[type="range"]').forEach(el => {
+            el.addEventListener('input', update);
         });
         
-        // Animation loop
+        // Animation
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
             renderer.render(scene, camera);
         }
         
-        // Handle resize
+        // Resize
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
         
-        // Initial update
-        updateScene();
+        update();
         animate();
+        
+        console.log('🦞 Rover Cal 3D loaded!');
     </script>
 </body>
 </html>
