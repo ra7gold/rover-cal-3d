@@ -11,27 +11,28 @@
         
         #controls {
             position: absolute; top: 10px; left: 10px;
-            background: rgba(0,0,0,0.9); padding: 12px;
-            border-radius: 8px; width: 270px;
+            background: rgba(0,0,0,0.92); padding: 12px;
+            border-radius: 8px; width: 280px;
             max-height: 95vh; overflow-y: auto; z-index: 100;
             font-size: 11px;
         }
         
-        h2 { font-size: 12px; margin: 10px 0 6px 0; color: #4ecdc4; 
+        h2 { font-size: 11px; margin: 10px 0 5px 0; color: #4ecdc4; 
              border-bottom: 1px solid #4ecdc4; padding-bottom: 3px; }
         h2:first-child { margin-top: 0; }
         
-        .row { display: flex; align-items: center; margin-bottom: 4px; }
-        .row label { flex: 1; color: #999; }
-        .row input[type="range"] { width: 80px; margin: 0 6px; }
+        .row { display: flex; align-items: center; margin-bottom: 3px; }
+        .row label { flex: 1; color: #999; font-size: 10px; }
+        .row input[type="range"] { width: 75px; margin: 0 5px; }
         .row .val { width: 50px; text-align: right; font-family: monospace; color: #4ecdc4; font-size: 10px; }
         
-        .note { font-size: 9px; color: #666; margin: 4px 0 8px 0; font-style: italic; }
+        .note { font-size: 9px; color: #555; margin: 2px 0 6px 0; font-style: italic; }
+        .dim { font-size: 9px; color: #666; }
         
         #results {
             position: absolute; top: 10px; right: 10px;
-            background: rgba(0,0,0,0.9); padding: 12px;
-            border-radius: 8px; width: 180px; z-index: 100;
+            background: rgba(0,0,0,0.92); padding: 12px;
+            border-radius: 8px; width: 170px; z-index: 100;
         }
         .res-row { display: flex; justify-content: space-between; margin: 3px 0; font-size: 11px; }
         .res-row span:first-child { color: #888; }
@@ -40,20 +41,16 @@
         #legend {
             position: absolute; bottom: 10px; left: 10px;
             background: rgba(0,0,0,0.85); padding: 8px 12px;
-            border-radius: 8px; font-size: 10px; z-index: 100;
+            border-radius: 8px; font-size: 9px; z-index: 100;
         }
         .leg { display: flex; align-items: center; margin: 2px 0; }
-        .leg span { width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; display: inline-block; }
+        .leg span { width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; display: inline-block; }
         
         #coords {
             position: absolute; bottom: 10px; right: 10px;
-            background: rgba(0,0,0,0.85); padding: 8px 12px;
-            border-radius: 8px; font-size: 9px; z-index: 100; color: #888;
+            background: rgba(0,0,0,0.85); padding: 6px 10px;
+            border-radius: 8px; font-size: 9px; z-index: 100; color: #666;
         }
-        #coords div { margin: 2px 0; }
-        .axis-x { color: #ff4444; }
-        .axis-y { color: #44ff44; }
-        .axis-z { color: #4444ff; }
     </style>
 </head>
 <body>
@@ -61,24 +58,27 @@
     
     <div id="controls">
         <h2>📐 Machine Orientation</h2>
-        <div class="note">Yaw: CW from above (compass). Pitch/Roll: see PDF</div>
         <div class="row"><label>Yaw (°)</label><input type="range" id="yaw" min="-45" max="45" value="0"><span class="val" id="yawV">0</span></div>
         <div class="row"><label>Pitch (°)</label><input type="range" id="pitch" min="-10" max="10" value="0"><span class="val" id="pitchV">0</span></div>
         <div class="row"><label>Roll (°)</label><input type="range" id="roll" min="-10" max="10" value="0"><span class="val" id="rollV">0</span></div>
         
+        <h2>🦾 Actuators</h2>
+        <div class="dim">BS_Pivot→Yaw_Pivot: 135cm | Yaw_Pivot→Drill: 135cm + X_Slide</div>
+        <div class="row"><label>Boom Swing (°)</label><input type="range" id="boomSwing" min="-45" max="45" value="0"><span class="val" id="boomSwingV">0</span></div>
+        <div class="row"><label>Yaw Arm (°)</label><input type="range" id="yawArm" min="-30" max="30" value="0"><span class="val" id="yawArmV">0</span></div>
+        <div class="row"><label>X-Slide (cm)</label><input type="range" id="xSlide" min="0" max="30" value="15"><span class="val" id="xSlideV">15</span></div>
+        <div class="row"><label>Z-Slide (cm)</label><input type="range" id="zSlide" min="0" max="50" value="25"><span class="val" id="zSlideV">25</span></div>
+        
         <h2>📡 Antenna Offsets (from WP)</h2>
-        <div class="note">Body frame: X=fwd, Y=right, Z=up</div>
-        <div class="row"><label>Heading Offset (°)</label><input type="range" id="hdgOff" min="-180" max="180" value="-87.85" step="0.05"><span class="val" id="hdgOffV">-87.85</span></div>
+        <div class="row"><label>Heading (°)</label><input type="range" id="hdgOff" min="-180" max="180" value="-87.85" step="0.1"><span class="val" id="hdgOffV">-87.85</span></div>
         <div class="row"><label>X fwd (ft)</label><input type="range" id="antX" min="-2" max="4" value="1.625" step="0.025"><span class="val" id="antXV">1.625</span></div>
         <div class="row"><label>Y right (ft)</label><input type="range" id="antY" min="0" max="8" value="5.435" step="0.025"><span class="val" id="antYV">5.435</span></div>
         <div class="row"><label>Z up (ft)</label><input type="range" id="antZ" min="2" max="12" value="6.64" step="0.1"><span class="val" id="antZV">6.64</span></div>
         
-        <h2>🛰️ Calibration Rover Mount</h2>
-        <div class="note">Rover behind WP in body X</div>
+        <h2>🛰️ Calibration Rover</h2>
         <div class="row"><label>Mount X (ft)</label><input type="range" id="mountX" min="-4" max="-1" value="-3" step="1"><span class="val" id="mountXV">-3</span></div>
         
-        <h2>🎯 QC Target Offset</h2>
-        <div class="note">Offset from WP in world frame</div>
+        <h2>🎯 QC Target</h2>
         <div class="row"><label>N (ft)</label><input type="range" id="tgtN" min="-2" max="2" value="0" step="0.02"><span class="val" id="tgtNV">0</span></div>
         <div class="row"><label>E (ft)</label><input type="range" id="tgtE" min="-2" max="2" value="0" step="0.02"><span class="val" id="tgtEV">0</span></div>
     </div>
@@ -88,26 +88,22 @@
         <div class="res-row"><span>N Error:</span><span class="pass" id="errN">0 mm</span></div>
         <div class="res-row"><span>E Error:</span><span class="pass" id="errE">0 mm</span></div>
         <div class="res-row"><span>Horiz:</span><span class="pass" id="errH">0 mm</span></div>
-        <div class="res-row" style="margin-top:6px;padding-top:6px;border-top:1px solid #333">
+        <div class="res-row" style="margin-top:5px;padding-top:5px;border-top:1px solid #333">
             <span>Status:</span><span class="pass" id="status">✅ PASS</span>
         </div>
     </div>
     
     <div id="legend">
-        <div class="leg"><span style="background:#4ecdc4"></span>Work Point (WP)</div>
+        <div class="leg"><span style="background:#4ecdc4"></span>Work Point</div>
         <div class="leg"><span style="background:#ff6b6b"></span>Machine Antenna</div>
         <div class="leg"><span style="background:#ff9f43"></span>Antenna Baseline</div>
-        <div class="leg"><span style="background:#f9ca24"></span>Calibration Rover</div>
-        <div class="leg"><span style="background:#a55eea"></span>Target Point</div>
-        <div class="leg"><span style="background:#26de81"></span>Computed WP</div>
+        <div class="leg"><span style="background:#f9ca24"></span>Cal Rover</div>
+        <div class="leg"><span style="background:#a55eea"></span>Target</div>
     </div>
     
     <div id="coords">
-        <div><strong>Machine Frame (LHR):</strong></div>
-        <div class="axis-x">X = Forward (+N)</div>
-        <div class="axis-y">Y = Right (+E)</div>
-        <div class="axis-z">Z = Up</div>
-        <div style="margin-top:4px">🖱️ Drag: rotate • Scroll: zoom</div>
+        X=Fwd(N) Y=Right(E) Z=Up<br>
+        🖱️ Drag/Scroll to navigate
     </div>
 
     <script type="importmap">
@@ -121,18 +117,20 @@
         import * as THREE from 'three';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
         
-        // Scene setup
+        // Constants (convert cm to ft: 1cm = 0.0328ft)
+        const CM_TO_FT = 0.0328084;
+        const BS_TO_YAW = 135 * CM_TO_FT;  // 4.43 ft
+        const YAW_TO_DRILL_BASE = 135 * CM_TO_FT;  // 4.43 ft
+        
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x1a1a2e);
         
-        // Camera - viewing from behind and above (operator perspective)
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 500);
-        camera.position.set(-15, 10, 12);  // Behind and to right
+        camera.position.set(-12, 10, 14);
         
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.shadowMap.enabled = true;
         document.getElementById('container').appendChild(renderer.domElement);
         
         const controls = new OrbitControls(camera, renderer.domElement);
@@ -145,159 +143,142 @@
         sun.position.set(10, 20, 10);
         scene.add(sun);
         
-        // Ground
-        const ground = new THREE.Mesh(
+        // Ground & Grid
+        scene.add(new THREE.Mesh(
             new THREE.PlaneGeometry(50, 50),
-            new THREE.MeshStandardMaterial({ color: 0x2d2d44, roughness: 0.9 })
-        );
-        ground.rotation.x = -Math.PI/2;
-        scene.add(ground);
-        
-        // Grid (world frame: X=North, Z=East in Three.js)
+            new THREE.MeshStandardMaterial({ color: 0x2d2d44 })
+        ).rotateX(-Math.PI/2));
         scene.add(new THREE.GridHelper(50, 50, 0x445566, 0x334455));
-        
-        // World axes - X(red)=North, Z(blue)=East, Y(green)=Up
-        const worldAxes = new THREE.AxesHelper(8);
-        scene.add(worldAxes);
-        
-        // Axis labels
-        function makeLabel(text, pos, color) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 64; canvas.height = 32;
-            const ctx = canvas.getContext('2d');
-            ctx.fillStyle = color;
-            ctx.font = 'bold 24px Arial';
-            ctx.fillText(text, 4, 24);
-            const tex = new THREE.CanvasTexture(canvas);
-            const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex }));
-            sprite.position.copy(pos);
-            sprite.scale.set(1.5, 0.75, 1);
-            return sprite;
-        }
-        scene.add(makeLabel('+N', new THREE.Vector3(9, 0.5, 0), '#ff6666'));
-        scene.add(makeLabel('+E', new THREE.Vector3(0, 0.5, 9), '#6666ff'));
-        scene.add(makeLabel('Up', new THREE.Vector3(0, 9, 0), '#66ff66'));
+        scene.add(new THREE.AxesHelper(6));
         
         // Materials
         const wpMat = new THREE.MeshStandardMaterial({ color: 0x4ecdc4, emissive: 0x4ecdc4, emissiveIntensity: 0.4 });
         const antMat = new THREE.MeshStandardMaterial({ color: 0xff6b6b, emissive: 0xff6b6b, emissiveIntensity: 0.3 });
         const ant2Mat = new THREE.MeshStandardMaterial({ color: 0xff9f43, emissive: 0xff9f43, emissiveIntensity: 0.3 });
         const roverMat = new THREE.MeshStandardMaterial({ color: 0xf9ca24, emissive: 0xf9ca24, emissiveIntensity: 0.4 });
-        const bodyMat = new THREE.MeshStandardMaterial({ color: 0xddaa00, roughness: 0.6 });
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0xddaa00 });
         const trackMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
         const frameMat = new THREE.MeshStandardMaterial({ color: 0x444444 });
-        const targetPlateMat = new THREE.MeshStandardMaterial({ color: 0xff4444 });
+        const armMat = new THREE.MeshStandardMaterial({ color: 0x666666 });
+        const targetMat = new THREE.MeshStandardMaterial({ color: 0xff4444 });
         
-        // Work Point (at origin)
-        const workPoint = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16), wpMat);
+        // Work Point
+        const workPoint = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 16), wpMat);
         scene.add(workPoint);
         
-        // Machine Group (rotates with yaw/pitch/roll)
-        const machineGroup = new THREE.Group();
-        scene.add(machineGroup);
+        // === MACHINE HIERARCHY ===
+        // Base (tracks + body) - rotates with machine yaw/pitch/roll
+        const baseGroup = new THREE.Group();
+        scene.add(baseGroup);
         
-        // --- TD-3 Machine Representation ---
-        // Main body
-        const body = new THREE.Mesh(new THREE.BoxGeometry(6, 1.2, 2.8), bodyMat);
+        // Body
+        const body = new THREE.Mesh(new THREE.BoxGeometry(5.5, 1.2, 2.6), bodyMat);
         body.position.set(-0.5, 1.2, 0);
-        machineGroup.add(body);
+        baseGroup.add(body);
         
         // Tracks
-        const trackL = new THREE.Mesh(new THREE.BoxGeometry(7, 0.7, 0.7), trackMat);
-        trackL.position.set(-0.5, 0.35, 1.6);
-        machineGroup.add(trackL);
-        const trackR = new THREE.Mesh(new THREE.BoxGeometry(7, 0.7, 0.7), trackMat);
-        trackR.position.set(-0.5, 0.35, -1.6);
-        machineGroup.add(trackR);
+        [-1.5, 1.5].forEach(z => {
+            const track = new THREE.Mesh(new THREE.BoxGeometry(6.5, 0.6, 0.6), trackMat);
+            track.position.set(-0.5, 0.3, z);
+            baseGroup.add(track);
+        });
         
-        // Target plate at FRONT (operator looks at this from rear)
-        const targetPlate = new THREE.Mesh(new THREE.BoxGeometry(0.1, 1, 1.5), targetPlateMat);
-        targetPlate.position.set(3, 1.5, 0);
-        machineGroup.add(targetPlate);
-        
-        // Mast (behind WP, toward operator)
+        // Mast base (fixed to body)
         const mastBase = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.5, 0.4, 12), frameMat);
-        mastBase.position.set(-2, 2, 0);
-        machineGroup.add(mastBase);
+        mastBase.position.set(-1.8, 2, 0);
+        baseGroup.add(mastBase);
         
-        const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.15, 5, 10), frameMat);
-        mast.position.set(-2, 4.5, 0);
-        machineGroup.add(mast);
+        // Mast vertical
+        const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.15, 4.5, 10), frameMat);
+        mast.position.set(-1.8, 4.25, 0);
+        baseGroup.add(mast);
         
-        // Antenna boom (horizontal)
-        const boom = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 3.5, 8), frameMat);
-        boom.rotation.x = Math.PI/2;
-        boom.position.set(-2, 6.8, 0);
-        machineGroup.add(boom);
+        // === BOOM SWING GROUP (rotates around mast) ===
+        const boomSwingGroup = new THREE.Group();
+        boomSwingGroup.position.set(-1.8, 6.5, 0);  // At top of mast
+        baseGroup.add(boomSwingGroup);
         
-        // Forward arrow
+        // Boom arm (BS_PIVOT to YAW_PIVOT = 135cm = 4.43ft)
+        const boomArm = new THREE.Mesh(new THREE.BoxGeometry(BS_TO_YAW, 0.15, 0.2), armMat);
+        boomArm.position.set(BS_TO_YAW/2, 0, 0);
+        boomSwingGroup.add(boomArm);
+        
+        // === YAW ARM GROUP (rotates at end of boom) ===
+        const yawArmGroup = new THREE.Group();
+        yawArmGroup.position.set(BS_TO_YAW, 0, 0);  // At yaw pivot
+        boomSwingGroup.add(yawArmGroup);
+        
+        // Yaw pivot indicator
+        const yawPivot = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), frameMat);
+        yawArmGroup.add(yawPivot);
+        
+        // Yaw arm (will be updated with X-slide)
+        const yawArm = new THREE.Mesh(new THREE.BoxGeometry(1, 0.12, 0.15), armMat);
+        yawArmGroup.add(yawArm);
+        
+        // === Z-SLIDE GROUP (moves up/down at end of yaw arm) ===
+        const zSlideGroup = new THREE.Group();
+        yawArmGroup.add(zSlideGroup);
+        
+        // Target plate (drill rod position)
+        const targetPlate = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.8, 0.6), targetMat);
+        zSlideGroup.add(targetPlate);
+        
+        // Forward marker on base
         const fwdArrow = new THREE.Mesh(
-            new THREE.ConeGeometry(0.25, 0.7, 8),
+            new THREE.ConeGeometry(0.2, 0.5, 8),
             new THREE.MeshStandardMaterial({ color: 0x00ff00 })
         );
         fwdArrow.rotation.z = -Math.PI/2;
-        fwdArrow.position.set(2.2, 2.2, 0);
-        machineGroup.add(fwdArrow);
+        fwdArrow.position.set(2.2, 1.8, 0);
+        baseGroup.add(fwdArrow);
         
-        // Machine local axes
-        const machAxes = new THREE.AxesHelper(1.5);
-        machAxes.position.set(0, 2.5, 0);
-        machineGroup.add(machAxes);
+        // Machine axes
+        const machAxes = new THREE.AxesHelper(1.2);
+        machAxes.position.set(0, 2, 0);
+        baseGroup.add(machAxes);
         
-        // --- GPS ANTENNAS ---
-        // Primary antenna
-        const antenna1 = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), antMat);
-        machineGroup.add(antenna1);
-        
-        // Secondary antenna (for heading baseline)
-        const antenna2 = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 16), ant2Mat);
-        machineGroup.add(antenna2);
-        
-        // Baseline
-        const baseline = new THREE.Line(
-            new THREE.BufferGeometry(),
-            new THREE.LineBasicMaterial({ color: 0xff9f43, linewidth: 2 })
-        );
-        machineGroup.add(baseline);
+        // === ANTENNAS (on mast) ===
+        const antenna1 = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), antMat);
+        baseGroup.add(antenna1);
+        const antenna2 = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), ant2Mat);
+        baseGroup.add(antenna2);
+        const baseline = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0xff9f43 }));
+        baseGroup.add(baseline);
         
         // Antenna poles
-        const poleMat = new THREE.MeshStandardMaterial({ color: 0x666666 });
-        const pole1 = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.5, 8), poleMat);
-        const pole2 = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.4, 8), poleMat);
-        machineGroup.add(pole1);
-        machineGroup.add(pole2);
+        const pole1 = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.4, 8), frameMat);
+        const pole2 = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.3, 8), frameMat);
+        baseGroup.add(pole1);
+        baseGroup.add(pole2);
         
-        // --- CALIBRATION ROVER ---
-        const rover = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), roverMat);
-        machineGroup.add(rover);
-        const roverPole = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1, 8), poleMat);
-        machineGroup.add(roverPole);
+        // === CALIBRATION ROVER ===
+        const rover = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), roverMat);
+        baseGroup.add(rover);
+        const roverPole = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.8, 8), frameMat);
+        baseGroup.add(roverPole);
         
-        // --- TARGET & COMPUTED WP ---
-        const target = new THREE.Mesh(
-            new THREE.OctahedronGeometry(0.2),
-            new THREE.MeshStandardMaterial({ color: 0xa55eea, emissive: 0xa55eea, emissiveIntensity: 0.4 })
-        );
+        // === TARGET & COMPUTED WP ===
+        const target = new THREE.Mesh(new THREE.OctahedronGeometry(0.18), 
+            new THREE.MeshStandardMaterial({ color: 0xa55eea, emissive: 0xa55eea, emissiveIntensity: 0.4 }));
         scene.add(target);
         
-        const computedWP = new THREE.Mesh(
-            new THREE.SphereGeometry(0.18, 16, 16),
-            new THREE.MeshStandardMaterial({ color: 0x26de81, wireframe: true })
-        );
+        const computedWP = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16),
+            new THREE.MeshStandardMaterial({ color: 0x26de81, wireframe: true }));
         scene.add(computedWP);
         
-        // Error line
-        const errorLine = new THREE.Line(
-            new THREE.BufferGeometry(),
-            new THREE.LineBasicMaterial({ color: 0xff6b6b })
-        );
+        const errorLine = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0xff6b6b }));
         scene.add(errorLine);
         
-        // --- UPDATE ---
+        // === UPDATE ===
         function update() {
             const yaw = +document.getElementById('yaw').value;
             const pitch = +document.getElementById('pitch').value;
             const roll = +document.getElementById('roll').value;
+            const boomSwing = +document.getElementById('boomSwing').value;
+            const yawArmAngle = +document.getElementById('yawArm').value;
+            const xSlide = +document.getElementById('xSlide').value;
+            const zSlide = +document.getElementById('zSlide').value;
             const hdgOff = +document.getElementById('hdgOff').value;
             const antX = +document.getElementById('antX').value;
             const antY = +document.getElementById('antY').value;
@@ -306,11 +287,15 @@
             const tgtN = +document.getElementById('tgtN').value;
             const tgtE = +document.getElementById('tgtE').value;
             
-            // Display
+            // Display values
             document.getElementById('yawV').textContent = yaw;
             document.getElementById('pitchV').textContent = pitch;
             document.getElementById('rollV').textContent = roll;
-            document.getElementById('hdgOffV').textContent = hdgOff.toFixed(2);
+            document.getElementById('boomSwingV').textContent = boomSwing;
+            document.getElementById('yawArmV').textContent = yawArmAngle;
+            document.getElementById('xSlideV').textContent = xSlide;
+            document.getElementById('zSlideV').textContent = zSlide;
+            document.getElementById('hdgOffV').textContent = hdgOff.toFixed(1);
             document.getElementById('antXV').textContent = antX.toFixed(3);
             document.getElementById('antYV').textContent = antY.toFixed(3);
             document.getElementById('antZV').textContent = antZ.toFixed(2);
@@ -318,37 +303,53 @@
             document.getElementById('tgtNV').textContent = tgtN.toFixed(2);
             document.getElementById('tgtEV').textContent = tgtE.toFixed(2);
             
-            // Radians - using machine convention (yaw CW from above)
-            const yawR = -yaw * Math.PI / 180;  // Negate for Three.js (CCW positive)
+            // Radians
+            const yawR = -yaw * Math.PI / 180;
             const pitchR = pitch * Math.PI / 180;
             const rollR = roll * Math.PI / 180;
+            const bsR = -boomSwing * Math.PI / 180;  // CCW from above positive
+            const yaR = yawArmAngle * Math.PI / 180;  // Target left positive
             const hdgR = hdgOff * Math.PI / 180;
             
-            // Machine rotation (Three.js: Y is up)
-            machineGroup.rotation.set(0, 0, 0);
-            machineGroup.rotateY(yawR);
-            machineGroup.rotateX(-pitchR);  // Flip pitch per PDF
-            machineGroup.rotateZ(-rollR);   // Flip roll per PDF
+            // X-slide extends yaw arm length (cm to ft)
+            const yawArmLen = YAW_TO_DRILL_BASE + xSlide * CM_TO_FT;
             
-            // Antenna 1 position (body frame -> Three.js)
-            // Body: X=fwd, Y=right, Z=up
-            // Three.js: X=N(fwd), Z=E(right), Y=up
+            // Z-slide offset (cm to ft)
+            const zOffset = zSlide * CM_TO_FT;
+            
+            // Update machine rotations
+            baseGroup.rotation.set(0, 0, 0);
+            baseGroup.rotateY(yawR);
+            baseGroup.rotateX(-pitchR);
+            baseGroup.rotateZ(-rollR);
+            
+            // Boom swing
+            boomSwingGroup.rotation.y = bsR;
+            
+            // Yaw arm
+            yawArmGroup.rotation.y = yaR;
+            
+            // Update yaw arm geometry
+            yawArm.geometry.dispose();
+            yawArm.geometry = new THREE.BoxGeometry(yawArmLen, 0.12, 0.15);
+            yawArm.position.set(yawArmLen/2, 0, 0);
+            
+            // Z-slide position
+            zSlideGroup.position.set(yawArmLen, -zOffset, 0);
+            
+            // Antennas
             antenna1.position.set(antX, antZ, antY);
-            pole1.position.set(antX, antZ - 0.25, antY);
+            pole1.position.set(antX, antZ - 0.2, antY);
             
-            // Antenna 2 - along baseline at heading offset angle
-            // Heading offset: angle from body X to antenna baseline
-            // Baseline length ~2ft for visualization
             const baseLen = 2;
             const a2x = antX + baseLen * Math.cos(hdgR);
             const a2y = antY + baseLen * Math.sin(hdgR);
             antenna2.position.set(a2x, antZ, a2y);
-            pole2.position.set(a2x, antZ - 0.2, a2y);
-            
+            pole2.position.set(a2x, antZ - 0.15, a2y);
             baseline.geometry.setFromPoints([antenna1.position, antenna2.position]);
             
-            // Rover (behind WP at mountX)
-            rover.position.set(mountX, 0.5, 0);
+            // Rover
+            rover.position.set(mountX, 0.4, 0);
             roverPole.position.set(mountX, 0, 0);
             
             // World positions
@@ -356,16 +357,14 @@
             rover.getWorldPosition(roverWorld);
             
             // Target
-            target.position.set(tgtN, 0.12, tgtE);
+            target.position.set(tgtN, 0.1, tgtE);
             
-            // Compute WP from rover (yaw already applied via group rotation)
-            // In world frame: WP = Rover - offset_in_world
-            // offset_in_world = mountX * (cos(yaw), sin(yaw)) but yaw is already in group
+            // Compute WP
             const compN = roverWorld.x + mountX * Math.cos(-yawR);
             const compE = roverWorld.z + mountX * Math.sin(-yawR);
-            computedWP.position.set(compN, 0.12, compE);
+            computedWP.position.set(compN, 0.1, compE);
             
-            // Errors (mm)
+            // Errors
             const errN = (compN - tgtN) * 304.8;
             const errE = (compE - tgtE) * 304.8;
             const errH = Math.sqrt(errN*errN + errE*errE);
@@ -383,10 +382,9 @@
             else if (errH <= 30) { st.textContent = '⚠️ CHECK'; st.className = 'warn'; }
             else { st.textContent = '❌ RECAL'; st.className = 'fail'; }
             
-            // Error line
             errorLine.geometry.setFromPoints([
-                new THREE.Vector3(compN, 0.2, compE),
-                new THREE.Vector3(tgtN, 0.2, tgtE)
+                new THREE.Vector3(compN, 0.15, compE),
+                new THREE.Vector3(tgtN, 0.15, tgtE)
             ]);
         }
         
@@ -406,7 +404,6 @@
         
         update();
         animate();
-        console.log('🦞 TD-3 Calibration Viz - Coordinate frames updated');
     </script>
 </body>
 </html>
